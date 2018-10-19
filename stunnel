@@ -9,8 +9,7 @@ instalador(){
 	apt-get install stunnel4 &>/dev/null 
 	sleep 2
 	clear
-	read -p $'\e[32;1m• Qual porta vai rodar o SSL? \e[31;1m[\e[33;1m80/443\e[31;1m]\e[32;1m: \e[33;1m' 
-port_ssl
+	read -p $'\e[32;1m• Qual porta vai rodar o SSL? \e[31;1m[\e[33;1m80/443\e[31;1m]\e[32;1m: \e[33;1m' port_ssl
     	cd /etc/stunnel
 	printf "cert = /etc/stunnel/stunnel.pem
 client = no
