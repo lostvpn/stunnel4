@@ -1,0 +1,77 @@
+#!/bin/bash
+# Script SSL Tunnel
+# Criado por: @lostvpn_oficial
+
+instalador(){
+	echo -e '\e[32;1m• Atualizando pacotes...\e[0m'
+	apt-get update &>/dev/null
+	echo -e '\e[32;1m• Instalando o stunnel4...\e[0m' 
+	apt-get install stunnel4 &>/dev/null 
+	sleep 2
+	clear
+	read -p $'\e[32;1m• Qual porta vai rodar o SSL? \e[31;1m[\e[33;1m80/443\e[31;1m]\e[32;1m: \e[33;1m' 
+port_ssl
+    	cd /etc/stunnel
+	printf "cert = /etc/stunnel/stunnel.pem
+client = no
+sslVersion = all
+socket = a:SO_REUSEADDR=1
+socket = l:TCP_NODELAY=1
+socket = r:TCP_NODELAY=1
+[ssh]
+connect = 127.0.0.1:22
+accept = $port_ssl" > stunnel.conf
+	openssl genrsa -out key.pem 2048
+	clear
+	echo -e '\e[32;1m• Não é obrigatório preencher os dados a seguir!\n\e[0m'
+	echo -e '\e[32;1m• Apenas dê ENTER para continuar.\n\n\e[0m'
+	openssl req -new -x509 -key key.pem -out cert.pem -days 1095
+	clear
+	cat key.pem cert.pem > stunnel.pem
+	mv stunnel.pem /etc/stunnel
+	cd /etc/default
+	printf "ENABLED=1
+FILES="/etc/stunnel/*.conf"
+OPTIONS=""
+PPP_RESTART=0" > stunnel4
+	clear
+	echo -e '\e[32;1m• Reiniciando o stunnel4...\n\e[0m'
+	service stunnel4 restart 1> /dev/null 2> /dev/null
+    	/etc/init.d/stunnel4 restart 1> /dev/null 2> /dev/null
+	clear
+	echo -e '\e[32;1m• O stunnel4 foi instalado e configurado com sucesso!\n\e[0m'
+	sleep 2
+}
+
+remover(){
+	echo -e '\e[32;1m• Removendo o stunnel4 aguarde...\e[0m'
+	apt-get -y remove --purge stunnel4 &>/dev/null  
+	apt-get -y autoremove &>/dev/null
+	rm -rf /etc/stunnel
+	rm -rf /etc/default/stunnel4
+	clear
+	echo -e '\e[32;1m• Pronto! O stunnel4 foi removido com sucesso!\n\e[0m'
+	sleep 2
+}
+clear
+echo -e '\e[32;1m• Script created by: \e[33;1mlostvpn\n\n'
+echo -e '\e[31;1m================== \e[32;1mMenu stunnel4 \e[31;1m=====================\n\e[0m'
+echo -e '\e[31;1m[\e[33;1m1\e[31;1m] \e[32;1mInstalar o stunnel\e[0m'
+echo -e '\e[31;1m[\e[33;1m2\e[31;1m] \e[32;1mRemover o stunnel\e[0m'
+echo -e '\e[31;1m[\e[33;1m0\e[31;1m] \e[32;1mSair do menu\n\e[0m'
+read -p $'\e[32;1mDigite sua opção: \e[33;1m' resp
+if [ $resp = "1" ]; then
+	clear
+	instalador
+elif [ $resp = "2" ]; then
+	clear
+	remover
+elif [ $resp = "0" ]; then
+	echo -e '\e[33;1m\n• Saindo...\n\e[0m'
+else
+	echo -e '\e[31;1m\n• Opção inválida! \e[0m'
+	sleep 1
+	bash stunnel
+fi
+sleep 1
+exit
