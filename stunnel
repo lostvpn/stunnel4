@@ -22,9 +22,7 @@ connect = 127.0.0.1:22
 accept = $port_ssl" > stunnel.conf
 	openssl genrsa -out key.pem 2048
 	clear
-	echo -e '\e[32;1m• Não é obrigatório preencher os dados a seguir!\n\e[0m'
-	echo -e '\e[32;1m• Apenas dê ENTER para continuar.\n\n\e[0m'
-	openssl req -new -x509 -key key.pem -out cert.pem -days 1095
+	echo -ne '\n\n\n\n\n\n\n' | openssl req -new -x509 -key key.pem -out cert.pem -days 1095
 	clear
 	cat key.pem cert.pem > stunnel.pem
 	mv stunnel.pem /etc/stunnel
