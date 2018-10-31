@@ -42,10 +42,11 @@ PPP_RESTART=0" > stunnel4
 
 remover(){
 	echo -e '\e[32;1m• Removendo o stunnel4 aguarde...\e[0m'
-	apt-get -y remove --purge stunnel4 &>/dev/null  
+	apt-get -y purge stunnel4 &>/dev/null  
 	apt-get -y autoremove &>/dev/null
 	rm -rf /etc/stunnel
 	rm -rf /etc/default/stunnel4
+	rm -rf stunnel
 	clear
 	echo -e '\e[32;1m• Pronto! O stunnel4 foi removido com sucesso!\n\e[0m'
 	sleep 2
