@@ -1,6 +1,6 @@
 #!/bin/bash
 # Script SSL Tunnel
-# Criado por: @lostvpn_official
+# Criado por: @lostoficial
 
 instalador(){
 	echo -e '\e[32;1m• Atualizando pacotes...\e[0m'
